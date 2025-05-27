@@ -10,10 +10,12 @@ namespace JuicyDI.Demo.Scripts
     [JDIMonoController]
     public class GameStarter: MonoBehaviour
     {
-        [Inject] private List<ITestStarter> m_TestStarter;
+        [Inject] private List<ISequence> m_TestStarter;
 
         [SerializeField] private MainJDIController m_MainJDIController;
         [SerializeField] private Button m_Button;
+
+        private GameSequenceController m_GameSequenceController;
 
         private void Start()
         {
@@ -21,10 +23,7 @@ namespace JuicyDI.Demo.Scripts
             m_MainJDIController.Init();
 
             Debug.Log("~~~~After Injection~~~~");
-            foreach (var starter in m_TestStarter)
-            {
-                starter.Run();
-            }
+            m_GameSequenceController = new GameSequenceController(m_TestStarter);
             
             Debug.Log("~~~~After Run~~~~");
             
