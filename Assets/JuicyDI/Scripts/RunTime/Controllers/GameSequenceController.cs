@@ -7,15 +7,24 @@ namespace JuicyDI
 {
     public class GameSequenceController
     {
+        public List<ISequence> SortedSequence => m_SortedSequence;
+        
+        private List<ISequence> m_SortedSequence;
+        
         public GameSequenceController(List<ISequence> sequenceElements)
         {
-            var sortedSequence = sequenceElements
+            m_SortedSequence = sequenceElements
                 .OrderBy(type => type.GetType().GetCustomAttribute<SequenceParticipant>().Number)
                 .ToList();
 
-            for (int i = 0; i < sortedSequence.Count; i++)
+            for (int i = 0; i < m_SortedSequence.Count; i++)
             {
-                sortedSequence[i].MethodStart();
+                m_SortedSequence[i].MethodInit();
+            }            
+            
+            for (int i = 0; i < m_SortedSequence.Count; i++)
+            {
+                m_SortedSequence[i].MethodStart();
             }
         }
     }

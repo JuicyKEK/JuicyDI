@@ -11,7 +11,7 @@ namespace JuicyDI
     public class JDIObjectFactory : IObjectFactory
     {
         private Dictionary<string, object> m_GlobalBeansContainer = new Dictionary<string, object>();
-        private Dictionary<string, object> m_SceneBeansContainer = new Dictionary<string, object>();
+        private MultiValueDictionary<string, object> m_SceneBeansContainer = new MultiValueDictionary<string, object>();
         private MultiValueDictionary<string, string> m_MapInterfaceToBeans = new MultiValueDictionary<string, string>();
         
         private List<string> m_MapInterfaceToDestroy = new List<string>();
@@ -35,17 +35,17 @@ namespace JuicyDI
                 {
                     string name = monoBehaviour.GetType().AssemblyQualifiedName;
 
-                    if (m_GlobalBeansContainer.ContainsKey(name))
-                    {
-                        Debug.LogError($"bean with name: {name} already exists in GlobalBeansContainer");
-                        continue;
-                    }
-                    
-                    if (m_SceneBeansContainer.ContainsKey(name))
-                    {
-                        Debug.LogError($"bean with name: {name} already exists in SceneBeansContainer");
-                        continue;
-                    }
+                    // if (m_GlobalBeansContainer.ContainsKey(name))
+                    // {
+                    //     Debug.LogError($"bean with name: {name} already exists in GlobalBeansContainer");
+                    //     continue;
+                    // }
+                    //
+                    // if (m_SceneBeansContainer.ContainsKey(name))
+                    // {
+                    //     Debug.LogError($"bean with name: {name} already exists in SceneBeansContainer");
+                    //     continue;
+                    // }
 
                     if (monoController.Context == typeof(SceneBean))
                     {
@@ -93,6 +93,28 @@ namespace JuicyDI
                         if (attr.GetType() == typeof(Inject))
                         {
                             InjectToField(field, bean);
+                        }
+                    }
+                }
+            }
+        }
+        
+        private void Injecting(MultiValueDictionary<string, object> beansContainer)
+        {
+            var bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public;
+            
+            foreach (var keys in beansContainer.GetKeys())
+            {
+                foreach (var bean in beansContainer.Values(keys))
+                {
+                    foreach (var field in bean.GetType().GetFields(bindingFlags))
+                    {
+                        foreach (var attr in Attribute.GetCustomAttributes(field))
+                        {
+                            if (attr.GetType() == typeof(Inject))
+                            {
+                                InjectToField(field, bean);
+                            }
                         }
                     }
                 }
@@ -153,7 +175,7 @@ namespace JuicyDI
 
             if (m_MapInterfaceToBeans.ContainsKey(key))
             {
-                var values = m_MapInterfaceToBeans.GetValues(key);
+                var values = m_MapInterfaceToBeans.Values(key);
                 for (int i = 0; i < values.Count; i++)
                 {
                     var result = GetBeanObject(values[i]);
@@ -173,7 +195,10 @@ namespace JuicyDI
             
             if (m_SceneBeansContainer.ContainsKey(key))
             {
-                beans.Add((T)m_SceneBeansContainer[key]);
+                for (int i = 0; i < m_SceneBeansContainer[key].Count; i++)
+                {
+                    beans.Add((T)m_SceneBeansContainer[key][i]);
+                }
             }
             
             return beans;
@@ -184,7 +209,7 @@ namespace JuicyDI
             string beanName;
             if (m_MapInterfaceToBeans.ContainsKey(key))
             {
-                beanName = m_MapInterfaceToBeans.GetValue(key);
+                beanName = m_MapInterfaceToBeans.Value(key);
                 var bean = GetBeanObject(beanName);
                 RemoveOldInterfaceBeans(key);
                 return bean;
@@ -197,7 +222,7 @@ namespace JuicyDI
             
             if (m_SceneBeansContainer.ContainsKey(key))
             {
-                return m_SceneBeansContainer[key];
+                return m_SceneBeansContainer.Value(key);
             }
             
             return null;
@@ -212,7 +237,7 @@ namespace JuicyDI
 
             if (m_SceneBeansContainer.ContainsKey(beanName))
             {
-                return m_SceneBeansContainer[beanName];
+                return m_SceneBeansContainer.Value(beanName);
             }
             
             m_MapInterfaceToDestroy.Add(beanName);

@@ -28,6 +28,11 @@ namespace JuicyDI.Demo.Scripts
             Debug.Log($"Test1JDIMonoController - I exist");
         }
 
+        public void MethodInit()
+        {
+            
+        } 
+        
         public void MethodStart()
         {
             Debug.Log($"______Test1JDIMonoController____");

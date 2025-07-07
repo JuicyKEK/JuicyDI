@@ -65,23 +65,6 @@ namespace JuicyDI
         private void RegisterNonMonoBeans()
         {
             //ComingSoon
-            /*List<Assembly> assemblies = new List<Assembly>();
-
-            foreach (var type in m_FastSearchNamespacesByClasses)
-            {
-                assemblies.Add(type.GetTypeInfo().Assembly);
-            }
-            assemblies.Add(typeof(BinController).GetTypeInfo().Assembly);
-            
-            IEnumerable<Type> types = assemblies.SelectMany(t => t.GetTypes());
-            
-            foreach (var type in types)
-            {   
-                if (type.GetCustomAttribute<JDIController>() != null)
-                {
-                    RegisterCOntroller(type);
-                }
-            }*/
         }
     }
 }

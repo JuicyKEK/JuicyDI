@@ -7,6 +7,18 @@ namespace JuicyDI.Utils
     {
         private readonly Dictionary<TKey, List<TValue>> m_Dictionary = new();
 
+        public List<TValue> this[TKey key]
+        {
+            get
+            {
+                return Values(key);
+            }
+            set
+            {
+                Add(key, value);
+            }
+        }
+        
         public void Add(TKey key, TValue value)
         {
             if (!m_Dictionary.ContainsKey(key))
@@ -27,12 +39,12 @@ namespace JuicyDI.Utils
             m_Dictionary[key].AddRange(value);
         }
 
-        public List<TValue> GetValues(TKey key)
+        public List<TValue> Values(TKey key)
         {
             return m_Dictionary.TryGetValue(key, out List<TValue> values) ? values : null;
         }
         
-        public TValue GetValue(TKey key)
+        public TValue Value(TKey key)
         {
             var listValues = m_Dictionary.TryGetValue(key, out List<TValue> values) ? values : null;
             
@@ -59,6 +71,11 @@ namespace JuicyDI.Utils
             List<TValue> newValues = m_Dictionary[key].Except(value).ToList();
             RemoveKey(key);
             Add(key, newValues);
+        }
+        
+        public void Clear()
+        {
+            m_Dictionary.Clear();
         }
 
         public bool ContainsKey(TKey key)
