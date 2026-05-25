@@ -9,5 +9,6 @@ namespace JuicyDI
         void InjectingBeans();
         void RemoveSceneContext();
         List<T> GetBeans<T>(string key);
+        void LateInjectingBeans(object bean);
     }
 }
