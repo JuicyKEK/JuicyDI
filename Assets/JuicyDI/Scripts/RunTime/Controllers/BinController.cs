@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 using Codice.LogWrapper;
+using JuicyDI.Scripts.RunTime.Factory;
 
 namespace JuicyDI
 {
@@ -13,6 +14,7 @@ namespace JuicyDI
         
         private List<Type> m_FastSearchNamespacesByClasses;
         private IObjectFactory m_ObjectFactory = new JDIObjectFactory();
+        private ILateInjectionFactory m_LateInjectionConstruction  = new LateInjectionFactory();
         
         public BinController(List<Type> fastSearchNamespacesByClasses = null)
         {
@@ -37,6 +39,13 @@ namespace JuicyDI
             
             RegisterMonoBehaviorsBeans(monoBehaviours);
             InjectingBeans();
+        }
+        
+        public T ConstructorLateInjection<T>(params object[] runtimeArgs) where T : class
+        {
+            var newObject = (T)m_LateInjectionConstruction.ConstructorLateInjection(typeof(T), runtimeArgs);
+            m_ObjectFactory.LateInjectingBeans(newObject);
+            return newObject;
         }
 
         private void RemoveSceneContext()

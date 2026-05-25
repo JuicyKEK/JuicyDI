@@ -40,5 +40,10 @@ namespace JuicyDI.Demo.Scripts
             Debug.Log($"m_Test1JDIMonoController - {m_Test1JDIMonoController == null}");
             m_Test1JDIMonoController.Test1();
         }
+
+        public void LateInjectDebug()
+        {
+            Debug.Log("LateInject Run");
+        }
     }
 }

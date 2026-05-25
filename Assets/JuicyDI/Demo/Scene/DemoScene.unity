@@ -850,8 +850,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -582.8564, y: -261.72766}
-  m_SizeDelta: {x: 754.2872, y: 556.5447}
+  m_AnchoredPosition: {x: -638.352, y: -366.0594}
+  m_SizeDelta: {x: 643.296, y: 347.8812}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2131307860
 MonoBehaviour:
@@ -896,7 +896,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2131307861}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 517378059}
+        m_TargetAssemblyTypeName: JuicyDI.Demo.Scripts.Test3JDIMonoController, Assembly-CSharp
+        m_MethodName: RunLateInject
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2131307861
 MonoBehaviour:
   m_ObjectHideFlags: 0

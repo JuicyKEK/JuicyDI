@@ -67,6 +67,11 @@ namespace JuicyDI
             Injecting(m_SceneBeansContainer);
         }
 
+        public void LateInjectingBeans(object bean)
+        {
+            Injecting(bean);
+        }
+
         public void RemoveSceneContext()
         {
             if (m_SceneBeansContainer != null)
@@ -116,6 +121,22 @@ namespace JuicyDI
                                 InjectToField(field, bean);
                             }
                         }
+                    }
+                }
+            }
+        }
+        
+        private void Injecting(object bean)
+        {
+            var bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public;
+
+            foreach (var field in bean.GetType().GetFields(bindingFlags))
+            {
+                foreach (var attr in Attribute.GetCustomAttributes(field))
+                {
+                    if (attr.GetType() == typeof(Inject))
+                    {
+                        InjectToField(field, bean);
                     }
                 }
             }
