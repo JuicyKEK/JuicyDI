@@ -12,6 +12,11 @@ namespace JuicyDI.Demo.Scripts
             Debug.Log(text);
         }
         
+        public Test1JDILateInjectController()
+        {
+            Debug.Log("Test1JDILateInjectController WITHOUT arguments");
+        }
+        
         public Test1JDILateInjectController(string text, int param2)
         {
             Debug.Log($"{param2} - {text}");

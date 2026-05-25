@@ -43,6 +43,12 @@ namespace JuicyDI.Demo.Scripts
                 .ConstructorLateInjection<Test1JDILateInjectController>("LateInject Test1 WAS constructed", 42);
             test1.Run();
             
+            Debug.Log($"Запускаем Test11");
+            Test1JDILateInjectController test11 = BinController.GetContext()
+                .ConstructorLateInjection<Test1JDILateInjectController>("LateInject Test11 WAS constructed", 11);
+            test11.Run();
+
+            
             Debug.Log($"Запускаем Test3");
             Test1JDILateInjectController test3 = BinController.GetContext()
                 .ConstructorLateInjection<Test1JDILateInjectController>("LateInject Test3 WAS constructed");
